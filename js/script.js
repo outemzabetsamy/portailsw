@@ -1,30 +1,50 @@
 
-    
+    var selectedId;
     var act= document.getElementById("act");
     var hotel=document.getElementById("hotel");
     var resto=document.getElementById("resto");
     var lieux=document.getElementById("lieux");
     var agences=document.getElementById("agences");
     var taxi=document.getElementById("taxi");
-    
+    var home=document.getElementById("home");
+    var corp=document.getElementsByTagName("body")[0];
+    corp.addEventListener('click',getSelctedId)
     act.addEventListener('click',getActivities);
     hotel.addEventListener('click',getHotels);
     resto.addEventListener('click',getResto);
     lieux.addEventListener('click',getLieux);
     agences.addEventListener('click',getAgences);
     taxi.addEventListener('click',getTaxis);
+    home.addEventListener('click',setHome);
 
 var titre=document.getElementById("titre");
+function setHome(){
+    var bodd=document.getElementById("r");
+    bodd.innerHTML="";
+    var pres=document.getElementById("a");
+    pres.style.display="block";
+    titre.style.display="none";
+}
+
+function getSelctedId(e){
+console.log(e.target.id);
+selectedId=e.target.id
+}
 function getActivities(){
+    var pres=document.getElementById("a");
+    pres.style.display="none";
     var bodd=document.getElementById("r");
     bodd.innerHTML="";
     titre.innerHTML="Activitées";
+    titre.style.display="inline";
     var retrievedImage;
     var activitiesData;
 axios.get('https://activity-service-heroku.herokuapp.com/api/activites/all').then(actResp =>{
     console.log(actResp.data)
     activitiesData=actResp.data;
     activitiesData.forEach(e=>{
+        if(selectedId=="act"){
+            
         axios.get('https://image-service-heroku.herokuapp.com/image/get/' +e.photoActivite)
          .then(resp =>{
              console.log(resp.data)
@@ -85,14 +105,17 @@ axios.get('https://activity-service-heroku.herokuapp.com/api/activites/all').the
      
          
     
-     });
+     }});
 }).catch(error =>{console.log(error)});
 }
 //hotels
 
 function getHotels(){
+    var pres=document.getElementById("a");
+    pres.style.display="none";
     var bodd=document.getElementById("r");
     bodd.innerHTML="";
+    titre.style.display="block";
     titre.innerHTML="Hotels";
     var retrievedImage;
     var activitiesData;
@@ -100,6 +123,7 @@ axios.get('https://hotel-service-swapi.herokuapp.com/api/hotells').then(actResp 
     console.log(actResp.data)
     activitiesData=actResp.data;
     activitiesData.data.forEach(e=>{
+        if(selectedId=="hotel"){
         axios.get('https://image-service-heroku.herokuapp.com/image/get/' +e.PhotoHotel)
          .then(resp =>{
              console.log(resp.data)
@@ -165,14 +189,17 @@ axios.get('https://hotel-service-swapi.herokuapp.com/api/hotells').then(actResp 
      
          
     
-     });
+     }});
 }).catch(error =>{console.log(error)});
 }
 
 //restoo
 function getResto(){
+    var pres=document.getElementById("a");
+    pres.style.display="none";
     var bodd=document.getElementById("r");
     bodd.innerHTML="";
+    titre.style.display="block";
     titre.innerHTML="Restaurants";
     var retrievedImage;
     var activitiesData;
@@ -180,6 +207,8 @@ axios.get('https://apirestosw.herokuapp.com/users').then(actResp =>{
     console.log(actResp.data)
     activitiesData=actResp.data;
     activitiesData.forEach(e=>{
+        if(selectedId=="resto"){
+            
         axios.get('https://image-service-heroku.herokuapp.com/image/get/' +e.image)
          .then(resp =>{
              console.log(resp.data)
@@ -245,14 +274,17 @@ axios.get('https://apirestosw.herokuapp.com/users').then(actResp =>{
      
          
     
-     });
+     }});
 }).catch(error =>{console.log(error)});
 }
 
 //lieux
 function getLieux(){
+    var pres=document.getElementById("a");
+    pres.style.display="none";
     var bodd=document.getElementById("r");
     bodd.innerHTML="";
+    titre.style.display="block";
     titre.innerHTML="Lieux touristiques";
     var retrievedImage;
     var activitiesData;
@@ -260,6 +292,7 @@ axios.get('https://testapilieux.azurewebsites.net/api/lieuxs').then(actResp =>{
     console.log(actResp.data)
     activitiesData=actResp.data;
     activitiesData.forEach(e=>{
+        if(selectedId=="lieux"){
         axios.get('https://image-service-heroku.herokuapp.com/image/get/' +e.photo)
          .then(resp =>{
              console.log(resp.data)
@@ -320,14 +353,16 @@ axios.get('https://testapilieux.azurewebsites.net/api/lieuxs').then(actResp =>{
      
          
     
-     });
+     }});
 }).catch(error =>{console.log(error)});
 }
 /// agences location
 function getAgences(){
+    var pres=document.getElementById("a");
+    pres.style.display="none";
     var bodd=document.getElementById("r");
     bodd.innerHTML="";
-    
+    titre.style.display="block";
     titre.innerHTML="Agence de location de voitures";
 var soapReq=`<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/">
 <Body>
@@ -349,7 +384,7 @@ console.log(xmlDoc.getElementsByTagName("voiture"));
 var agences=xmlDoc.getElementsByTagName("voiture");
 console.log(agences[0].childNodes[1].innerHTML)
 var i=0;
-while(i<=agences.length){
+while(i<=agences.length && selectedId=="agences"){
     console.log(agences[0].childNodes[1].innerHTML);
     //ooooooooooOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
     console.log("1");
@@ -423,8 +458,11 @@ while(i<=agences.length){
 /// TAXIIIIIIIIIIIIIIIIIIIIII
 
 function getTaxis(){
+    var pres=document.getElementById("a");
+    pres.style.display="none";
     var bodd=document.getElementById("r");
     bodd.innerHTML="";
+    titre.style.display="block";
     titre.innerHTML="Station taxi de BEJAIA";
 var soapReq=`<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/">
 <Body>
@@ -446,7 +484,7 @@ console.log(xmlDoc.getElementsByTagName("station_taxi"));
 var agences=xmlDoc.getElementsByTagName("station_taxi");
 console.log(agences[0].childNodes[1].innerHTML)
 var i=0;
-while(i<=agences.length){
+while(i<=agences.length && selectedId=="taxi"){
     console.log(agences[0].childNodes[1].innerHTML);
     //ooooooooooOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
     console.log("1");
